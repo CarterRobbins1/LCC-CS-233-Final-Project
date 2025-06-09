@@ -54,3 +54,12 @@ h1 {
 .book-info p {
     margin: 0.25rem 0;
 }
+
+.book-rec {
+  margin: 1rem auto;
+  padding: 1rem;
+  max-width: 500px;
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

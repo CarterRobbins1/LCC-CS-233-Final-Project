@@ -9,7 +9,10 @@ const fileNamePrefix = isProduction ? '[contenthash].' : '';
 
 module.exports = {
   mode: isProduction ? 'production' : 'development',
-  entry: './src/js/script.js',
+  entry: {
+    main: './src/js/script.js',
+    recommendations: './src/js/recommendationsPage.js'
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: `[name].js`,
@@ -54,6 +57,12 @@ module.exports = {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       SERVER_URL: JSON.stringify(process.env.SERVER_URL || ''),
       GMAP_KEY: JSON.stringify(process.env.GMAP_KEY || '')
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/recommendations.html',
+      inject: 'body',
+      filename: 'recommendations.html',
+      chunks: ['recommendations'],
     })
   ],
   optimization: {

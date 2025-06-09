@@ -1,5 +1,6 @@
 import '../css/style.css';
 import { getRecommendations } from './recommendations';
+let bookSearchInstance;
 
 class BookSearch {
     constructor(inputId, resultsId, buttonId) {
@@ -54,15 +55,13 @@ class BookSearch {
                             <h3>${title}</h3>
                             <p><strong>Author:</strong> ${author}</p>
                             <p><strong>Rating:</strong> ${rating}</p>
-                            <button class="rec-btn" data-index="${i}">Show Recommendations</button>
-                            <div class="recommendations" id="rec-${i}"></div>
+                            <button class="rec-btn" onclick="viewRecommendations(${i})">Show Recommendations</button>
                         </div>
                     </div>
                 `;
 
             });
-            this.results.innerHTML = html;
-            this.addRecommendationHandlers();        
+            this.results.innerHTML = html;        
         }
 
         catch (error) {
@@ -71,30 +70,14 @@ class BookSearch {
         }
     }
 
-    addRecommendationHandlers() {
-        document.querySelectorAll('.rec-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const index = e.target.getAttribute('data-index');
-                const book = this.books[index];
-                const container = document.getElementById(`rec-${index}`);
-
-                container.innerHTML = 'Loading recommendations...';
-
-                const recommendations = await getRecommendations(book);
-
-                if (recommendations.length === 0) {
-                    container.innerHTML = 'No recommendations available.';
-                } else {
-                    container.innerHTML = recommendations.map(rec => `
-                        <p><strong>${rec.type}:</strong> ${rec.title}</p>
-                    `).join('');
-                }
-            });
-        });
-        
-    }
 }
 
 window.onload = () => {
-    new BookSearch('inputId', 'resultsId', 'searchBtn');
+    bookSearchInstance = new BookSearch('inputId', 'resultsId', 'searchBtn');
+};
+
+window.viewRecommendations = (index) => {
+    const book = bookSearchInstance.books[index];
+    localStorage.setItem('selectedBook', JSON.stringify(book));
+    window.open('recommendations.html', '_blank');
 };
