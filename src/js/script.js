@@ -1,9 +1,14 @@
+//Name: Carter Robbins Date: 6/8/25
+
 import '../css/style.css';
 import { getRecommendations } from './recommendations';
 let bookSearchInstance;
-
+// This code is part of a book search application that fetches book data from the Open Library API and displays it on a webpage. It allows users to search for books by title, view details, and get recommendations based on the selected book.
+// The BookSearch class handles the
+// search functionality, fetching data from the Open Library API, and displaying the results. It also provides a way to view recommendations for a selected book by opening a new page with the book's details stored in local storage.
+// The recommendations are fetched based on the author of the selected book, and the results are displayed in a separate recommendations page.
 class BookSearch {
-    constructor(inputId, resultsId, buttonId) {
+    constructor(inputId, resultsId, buttonId) { //basic constructor to initialize the BookSearch instance with input, results, and button element IDs.
         this.input = document.getElementById(inputId);
         this.results = document.getElementById(resultsId);
         this.button = document.getElementById(buttonId);
@@ -11,11 +16,13 @@ class BookSearch {
         this.handleSearch = this.handleSearch.bind(this);
         this.addEventHandlers();
     }
-
+    // Initializes the BookSearch instance with input, results, and button elements.
     addEventHandlers() {
         this.button.addEventListener('click', this.handleSearch);
     }
-
+    // Adds event listeners to the search button to trigger the search functionality.
+    // Handles the search functionality by fetching book data from the Open Library API based on the user's input.
+    // It updates the results section with the fetched book data or an error message if no results are found.
     async handleSearch() {
         console.log("Search triggered");
         const query = this.input.value.trim();
@@ -36,10 +43,11 @@ class BookSearch {
                 return;
          }
 
-            let html = '';
-            const topBooks = data.docs.slice(0, 3);
-            this.books = topBooks;
-
+            let html = ''; // Initialize an empty string to build the HTML for the book results.
+            const topBooks = data.docs.slice(0, 3); // Limit the results to the top 3 books for display.
+            this.books = topBooks; // Store the fetched books in the instance for later use, such as recommendations.
+            // Iterate over the top 3 books and build the HTML structure for each book.
+            // Each book will display its title, author(s), rating, and cover image.
             topBooks.forEach((book, i) => {
                 const title = book.title || 'No title available';
                 const author = book.author_name ? book.author_name.join(', ') : 'No author available';
@@ -71,11 +79,11 @@ class BookSearch {
     }
 
 }
-
+// The BookSearch class is responsible for handling the book search functionality, including fetching data from the Open Library API and displaying the results on the webpage.
 window.onload = () => {
     bookSearchInstance = new BookSearch('inputId', 'resultsId', 'searchBtn');
 };
-
+// The window.onload event initializes the BookSearch instance when the page loads, allowing users to search for books immediately.
 window.viewRecommendations = (index) => {
     const book = bookSearchInstance.books[index];
     localStorage.setItem('selectedBook', JSON.stringify(book));

@@ -1,0 +1,33 @@
+# === Node.js Dependencies ===
+node_modules/
+
+# === Build Output ===
+dist/
+
+# === Logs ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# === Environment Variables ===
+.env
+
+# === OS-Specific Files ===
+.DS_Store
+Thumbs.db
+
+# === VS Code Settings (Optional) ===
+.vscode/
+
+# === Webpack Cache (Optional but helpful) ===
+.cache/
+webpack-stats.json
+
+# === IDEs ===
+.idea/
+*.iml
+
+# === Misc ===
+*.tmp
+*.swp
