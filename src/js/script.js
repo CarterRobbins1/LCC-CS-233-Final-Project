@@ -1,4 +1,5 @@
 import '../css/style.css';
+import { getRecommendations } from './recommendations';
 
 class BookSearch {
     constructor(inputId, resultsId, buttonId) {
@@ -36,15 +37,15 @@ class BookSearch {
 
             let html = '';
             const topBooks = data.docs.slice(0, 3);
+            this.books = topBooks;
 
-            topBooks.forEach(book => {
+            topBooks.forEach((book, i) => {
                 const title = book.title || 'No title available';
                 const author = book.author_name ? book.author_name.join(', ') : 'No author available';
                 const rating = book.ratings_average ? `${book.ratings_average} stars` : 'No rating available';
                 const cover = book.cover_i 
                     ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` 
                     : 'https://placehold.co/100x150?text=No+Cover';
-;
 
                 html += `
                     <div class="book">
@@ -53,18 +54,44 @@ class BookSearch {
                             <h3>${title}</h3>
                             <p><strong>Author:</strong> ${author}</p>
                             <p><strong>Rating:</strong> ${rating}</p>
+                            <button class="rec-btn" data-index="${i}">Show Recommendations</button>
+                            <div class="recommendations" id="rec-${i}"></div>
                         </div>
                     </div>
                 `;
 
             });
             this.results.innerHTML = html;
+            this.addRecommendationHandlers();        
         }
 
         catch (error) {
             this.results.innerHTML = 'An error occurred while fetching the book data.';
             console.error(error);
         }
+    }
+
+    addRecommendationHandlers() {
+        document.querySelectorAll('.rec-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const index = e.target.getAttribute('data-index');
+                const book = this.books[index];
+                const container = document.getElementById(`rec-${index}`);
+
+                container.innerHTML = 'Loading recommendations...';
+
+                const recommendations = await getRecommendations(book);
+
+                if (recommendations.length === 0) {
+                    container.innerHTML = 'No recommendations available.';
+                } else {
+                    container.innerHTML = recommendations.map(rec => `
+                        <p><strong>${rec.type}:</strong> ${rec.title}</p>
+                    `).join('');
+                }
+            });
+        });
+        
     }
 }
 
