@@ -2,9 +2,11 @@
   "name": "lcc-cs-233-final-project-1",
   "version": "1.0.0",
   "description": "Book Recommendation Code",
-  "main": "index.js",
+  "main": "js/script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack serve --mode development --env development",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,11 @@
     "@babel/core": "^7.27.4",
     "@babel/preset-env": "^7.27.2",
     "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.2",
+    "dotenv": "^16.5.0",
     "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2",
+    "style-loader": "^4.0.0",
     "webpack": "^5.99.9",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
